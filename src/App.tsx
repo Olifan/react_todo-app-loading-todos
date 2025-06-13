@@ -92,6 +92,9 @@ export const App: React.FC = () => {
 
   const handleToggle = async (t: TodoMeta) => {
     markPending(t.id, true);
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     try {
       const updated = await updateTodo(t.id, { completed: !t.completed });
 
@@ -236,16 +239,17 @@ export const App: React.FC = () => {
                     ×
                   </button>
 
-                  {t.isPending && (
-                    <div
-                      data-cy="TodoLoader"
-                      className="modal overlay is-active"
-                    >
-                      {/* eslint-disable-next-line max-len */}
-                      <div className="modal-background has-background-white-ter" />
-                      <div className="loader" />
-                    </div>
-                  )}
+                  <div
+                    data-cy="TodoLoader"
+                    className={classNames('modal overlay', {
+                      'is-active': t.isPending,
+                    })}
+                  >
+                    {/* eslint-disable-next-line max-len */}
+                    <div className="modal-background has-background-white-ter" />
+                    <div className="loader" />
+                  </div>
+
                 </div>
               ),
             )}
